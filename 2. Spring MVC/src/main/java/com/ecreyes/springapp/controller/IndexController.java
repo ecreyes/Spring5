@@ -40,9 +40,13 @@ public class IndexController {
         return "perfil";
     }
 
+    /** Método para usar de ejemplo el foreach**/
     @GetMapping(value="/listar")
     public String listar(Model model){
         List<Usuario> usuarios = new ArrayList<>();
+        usuarios.add(new Usuario("eduardo","reyes"));
+        usuarios.add(new Usuario("carlos","reyes"));
+        usuarios.add(new Usuario("ignacio","reyes"));
         model.addAttribute("titulo","listar");
         model.addAttribute("usuarios",usuarios);
         return "listar";

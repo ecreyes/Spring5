@@ -11,7 +11,20 @@
 </div>
 
 <div th:if="${usuarios.size()>0}">
-
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="usuario: ${usuarios}">
+            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.apellido}"></td>
+        </tr>
+    </tbody>
+</table>
 </div>
 
 </body>
