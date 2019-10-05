@@ -6,5 +6,7 @@
 </head>
 <body>
 <h1>Bienvenido <span th:text="${usuario.nombre}"></span> <span th:text="${usuario.apellido}"></span></h1>
+<p>Correo: <span th:if="${usuario.email}" th:text="${usuario.email}"></span></p>
+<span th:if="!${usuario.email}">Este usuario no posee email.</span>
 </body>
 </html>

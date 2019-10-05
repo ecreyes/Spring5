@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** - Creación de la clase controller para index, cada método de esta clase
  *    se encarga de procesar una petición distinta
  *  - El RequestMapping creara la ruta de primer nivel, es decir ahora se
@@ -25,11 +28,23 @@ public class IndexController {
         return "index";
     }
 
+    /** Ruta para hacer ejemplo del uso de if en thymeleaf, ver
+     *  el html perfil para el funcionamiento del if
+     *  **/
     @GetMapping(value="/perfil")
     public String pefil(Model model){
         Usuario usuario = new Usuario("Eduardo","Reyes");
+        usuario.setEmail("eduardo@gmail.com");
         model.addAttribute("usuario",usuario);
         model.addAttribute("titulo","perfil");
         return "perfil";
+    }
+
+    @GetMapping(value="/listar")
+    public String listar(Model model){
+        List<Usuario> usuarios = new ArrayList<>();
+        model.addAttribute("titulo","listar");
+        model.addAttribute("usuarios",usuarios);
+        return "listar";
     }
 }
