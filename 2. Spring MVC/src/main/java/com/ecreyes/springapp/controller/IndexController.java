@@ -1,5 +1,6 @@
 package com.ecreyes.springapp.controller;
 
+import com.ecreyes.springapp.model.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,5 +23,13 @@ public class IndexController {
         model.addAttribute("titulo","Inicio");
         model.addAttribute("welcome","Bienvenido al sitio");
         return "index";
+    }
+
+    @GetMapping(value="/perfil")
+    public String pefil(Model model){
+        Usuario usuario = new Usuario("Eduardo","Reyes");
+        model.addAttribute("usuario",usuario);
+        model.addAttribute("titulo","perfil");
+        return "perfil";
     }
 }
