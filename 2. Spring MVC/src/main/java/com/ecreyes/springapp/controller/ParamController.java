@@ -21,4 +21,10 @@ public class ParamController {
         model.addAttribute("texto", texto);
         return "params/ver";
     }
+
+    /** Ruta para usar como ejemplo los href en la vista**/
+    @GetMapping("/")
+    public String index(){
+        return "params/index";
+    }
 }
