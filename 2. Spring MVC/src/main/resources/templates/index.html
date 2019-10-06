@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${titulo}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mystyle.css}">
 </head>
 <body>
 <h1 th:text="${welcome}"></h1>
+<p class="color-rojo">Texto en color rojo</p>
+<img th:src="@{/img/spring-framework.png}" alt="Logo de spring">
 </body>
 </html>
