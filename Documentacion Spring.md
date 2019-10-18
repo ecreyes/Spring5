@@ -2,9 +2,11 @@
 
 1. [Introducción](#TOC-introduccion)
 2. [Vista](#TOC-vista)
-   * [Mostrar variables](#TOC-variables)
+   * [Mostrar variables](#TOC-variable)
    * [If thymeleaf](#TOC-if)
    * [For thymeleaf](#TOC-for)
+   * [Href thymeleaf](#TOC-href)
+   * [Recursos estaticos css/js/img thymeleaf](#TOC-static)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -71,3 +73,25 @@ código:
 ```
 En este caso la variable `usuario` va a recorrer la lista de `usuarios`, entonces de esta forma se puede acceder a cada elemento.
 
+### <a name="TOC-href"></a>Href thymeleaf
+Si sabemos que la ruta a cierta página es `http://localhost:8080/app/index` y queremos acceder a esa vista mediante un href, con
+thymeleaf se hace de la siguiente forma:
+```html
+<a th:href="@{/app/index}">ir al inicio del sitio</a>
+```
+Ahora si se quiere acceder a una página que tiene un parámetro en la url como esta `http://localhost:8080/params/string?texto=holamundo`
+donde recibe una variable opcional texto, en el html se representa de la siguiente forma:
+```html
+<a th:href="@{/params/string(texto='hola mundo!')}"> enviar hola mundo por get</a>
+```
+donde `(texto='hola mundo!')` es el parámetro opcional.
+### <a name="TOC-static"></a>Recursos estaticos css/js/img thymeleaf
+Primero se debe crear una carpeta `static` ubicada en resources, quedando de esta forma `src/main/resources/static`, una vez creada
+esta carpeta se podran colocar recursos estaticos para ser renderizados en una vista, como por ejemplo css:
+```html
+<link rel="stylesheet" type="text/css" th:href="@{/css/mystyle.css}">
+```
+o ingresar una imagen a la vista:
+```html
+<img th:src="@{/img/spring-framework.png}" alt="Logo de spring">
+```
