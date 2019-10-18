@@ -15,6 +15,7 @@
    * [Path variable](#TOC-con-path)
 4. [Modelo](#TOC-model)
    * [Servicios](#TOC-model-service)
+   * [Qualifier](#TOC-model-qualifier)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -250,3 +251,23 @@ public class MiServicio implements IService {
     }
 }
 ```
+### <a name="TOC-model-qualifier"></a>Qualifier
+Supongamos que dejamos un servicio por defecto con @Primary, pero además queremos especificar el servicio directamente en caso de no
+querer utilizar el servicio por defecto, para esto se utiliza el decorador `@Qualifier` en el controlador donde se hizo la declaración
+de la interfaz:
+```java
+@Autowired
+@Qualifier("MiServicioComplejo")
+private IService service;
+```
+Luego en el servicio que se desea utilizar se le debe asignar el mismo nombre:
+```java
+@Service("MiServicioComplejo")
+public class MiServicioComplejo implements IService {
+    @Override
+    public String operacion() {
+        return "esta es otro tipo de operación compleja";
+    }
+}
+```
+El nombre se agrega dentro de @Service, quedando `@Service("MiServicioComplejo")`
