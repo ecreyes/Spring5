@@ -13,6 +13,8 @@
    * [Rutas primer nivel](#TOC-con-rutas)
    * [Recibir parámetros por url](#TOC-con-params)
    * [Path variable](#TOC-con-path)
+4. [Modelo](#TOC-model)
+   * [Servicios](#TOC-model-service)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -202,3 +204,49 @@ para generar la ruta se hace algo de este estilo:
   }
 ```
 Se coloca entre corchetes y se recibe el valor de id con `@PathVariable int id`.
+## <a name="TOC-model"></a>Modelo
+El modelo es utilizado con todo lo relacionado con la lógica de negocios, es decir interactua con servicios, bases de datos, comportamientos del software, y un vez obtenido el resultado de esta operacion se entrega al controlador.
+
+Cuando uno crea una aplicación de spring siempre se encuentra este archivo `SpringappApplication.java`, en la ubicación de ese archivo
+hay que crear un package en el mismo nivel que se llame `model` y dentro de esta carpeta se crearan todos los archivos del modelo, ya sea un POJO o servicios.
+
+### <a name="TOC-model-service"></a>Servicio
+Los servicios son usados para proveer una logica de negocio o comportamiento, primero se define la interfaz para describir los métodos
+que deben implementarse y luego se implementan en una clase, luego utilizando inyección de dependecia se puede desacoplar la instanciacion de la clase que provee los métodos al usarse.
+
+Para utilizar servicios se debe crear un package dentro de model y ahí colocar los archivos. Una vez hecho esto se puede crear la
+interfaz de la siguiente forma:
+```java
+public interface IService {
+    String operacion();
+}
+```
+En este caso la interfaz `Iservice` solicita que creemos un método que calcule una operación y devuelva un String, ahora creamos la clase que implentara esta interfaz:
+```java
+@Service
+public class MiServicio implements IService {
+    @Override
+    public String operacion() {
+        return "operación muy costosa....";
+    }
+}
+```
+Se debe colocar el decorador `@Service` para que Spring la reconozca como un componente de Spring y asi pueda utilizarse la inyección de dependencia. Luego para usar esta clase que calcula la operación se debe declarar en el Controlador de la siguiente forma:
+```java
+@Autowired
+private IService service;
+```
+de esta forma se declara la interfaz y con el decorador `@Autowired` se detecta la clase que implementa el método y asi no es necesario
+utilizar el operador `New()` o declarar explicitamente la clase en la variable.
+
+Ahora ¿qué pasa si existen dos o más clases que implementan la misma interfaz?, autowired no va a saber cual es la clase que estamos ocupando ya que hay varias implementaciones de la interfaz, para esto se debe utilizar el decorador @Primary en la declaración de la clase que queremos usar, quedando asi:
+```java
+@Service
+@Primary
+public class MiServicio implements IService {
+    @Override
+    public String operacion() {
+        return "operación muy costosa....";
+    }
+}
+```
