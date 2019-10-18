@@ -12,3 +12,12 @@ La instalación es bastante simple, solo requiere tener instalado:
 La creación de un proyecto se puede hacer de forma sencilla desde la siguiente página [Spring Initializr](https://start.spring.io/).
 
 Una vez elegida las opciones se puede descargar el proyecto y abrir con el editor de código deseado.
+
+## Listado de dependencias usadas.
+
+* Spring Boot DevTools
+* Spring Web
+* Thymeleaf
+* Spring Data JPA
+* H2 Database
+* MySQL Driver
