@@ -11,6 +11,8 @@
    * [Renderizar vista](#TOC-con-vista)
    * [Variables para la vista](#TOC-con-var)
    * [Rutas primer nivel](#TOC-con-rutas)
+   * [Recibir parámetros por url](#TOC-con-params)
+   * [Path variable](#TOC-con-path)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -165,3 +167,38 @@ public class IndexController {
 }
 ```
 El método index ahora es procesado por esta url `http://localhost:8080/app/index`
+### <a name="TOC-con-params"></a>Recibir parámetros por url.
+Suponiendo que existe este controlador:
+```java
+@Controller
+@RequestMapping("/params") //Se crea una ruta de primer nivel.
+public class ParamController {
+
+    /**  Esta ruta se encarga de recibir parámetros del tipo GET, es decir recibe un parametro
+     *   http://localhost:8080/params/string?texto=holamundo y luego se muestra en la vista.
+     *   el value es el nombre que se usará en el get, por defecto es obligatorio el parametro asi que se desactiva,
+     *   y en caso de que no se ingrese hay un valor por defecto
+     * **/
+    @GetMapping("/string")
+    public String param(@RequestParam(value = "texto", required = false, defaultValue = "algun valor") String texto,
+                        Model model) {
+        model.addAttribute("texto", texto);
+        return "params/ver";
+    }
+}
+```
+El `@RequestParam` es el encargado de recibir el parámetro por la url en este caso se declara con `@RequestParam(value = "texto", required = false, defaultValue = "algun valor") String texto`, el dato se almacenará como String en la variable texto, y lo que
+esta dentro de () son las opciones que se usarán para recibir el parámetro.
+
+`Nota:`el return `params/ver` esta redireccionando una vista `ver.html` que se encuentra dentro de una carpeta llamada `params`, todo esto dentro de resources.
+### <a name="TOC-con-path"></a>Path variable.
+Suponiendo que se desea recibir un parametro que va variando en la url, como por ejemplo el típico id al hacer un show,
+para generar la ruta se hace algo de este estilo:
+```java
+  @GetMapping("/ver/{id}")
+  public String ver(@PathVariable int id, Model model){
+      model.addAttribute("id",id);
+      return "variable/ver";
+  }
+```
+Se coloca entre corchetes y se recibe el valor de id con `@PathVariable int id`.
