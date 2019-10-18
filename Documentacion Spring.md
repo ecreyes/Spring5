@@ -214,7 +214,7 @@ hay que crear un package en el mismo nivel que se llame `model` y dentro de esta
 Los servicios son usados para proveer una logica de negocio o comportamiento, primero se define la interfaz para describir los métodos
 que deben implementarse y luego se implementan en una clase, luego utilizando inyección de dependecia se puede desacoplar la instanciacion de la clase que provee los métodos al usarse.
 
-Para utilizar servicios se debe crear un package dentro de model y ahí colocar los archivos. Una vez hecho esto se puede crear la
+Para utilizar servicios se debe crear un package `service` dentro de model y ahí colocar los archivos. Una vez hecho esto se puede crear la
 interfaz de la siguiente forma:
 ```java
 public interface IService {
