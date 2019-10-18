@@ -10,6 +10,7 @@
 3. [Controlador](#TOC-controlador)
    * [Renderizar vista](#TOC-con-vista)
    * [Variables para la vista](#TOC-con-var)
+   * [Rutas primer nivel](#TOC-con-rutas)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -109,11 +110,6 @@ con el nombre `NombreController` donde `Nombre` es el nombre con el que se llama
 @Controller
 public class IndexController {
 
-  @GetMapping(value="/index")
-  public String index(){
-      return "index";
-  }
-
 }
 ```
 Para que la clase creada sea de tipo controller hay que usar el decorador `@Controller`.
@@ -145,3 +141,27 @@ public String index(Model model){
 Al utilizar `Model` como parámetro en el método, este permite usar su propiedad `model.addAttribute` que permite agregar un atributo,
 donde el primer parámetro es la clave y el segundo es el valor, notese que el segundo valor no necesariamente puede ser un String o
 un integer, tambien puede ser algo mas complejo como un List.
+### <a name="TOC-con-rutas"></a>Rutas primer nivel.
+Las rutas de primer nivel como el nombre lo dice, son las rutas que aparecen primero en la url, por ejemplo si queremos que el controlador maneje todas las rutas que empiecen por `app`, la url queda asi `http://localhost:8080/app`
+```java
+@Controller
+@RequestMapping("/app")
+public class IndexController {
+
+}
+```
+Entonces ahora agregando el `@RequestMapping("/app")` este controlador se encargará de procesar todas las peticiones a esa url, y en
+caso de que exista un método como por ejemplo esto:
+```java
+@Controller
+@RequestMapping("/app")
+public class IndexController {
+
+  @GetMapping(value="/index")
+  public String index(){
+      return "index";
+  }
+
+}
+```
+El método index ahora es procesado por esta url `http://localhost:8080/app/index`
