@@ -7,6 +7,9 @@
    * [For thymeleaf](#TOC-for)
    * [Href thymeleaf](#TOC-href)
    * [Recursos estaticos css/js/img thymeleaf](#TOC-static)
+3. [Controlador](#TOC-controlador)
+   * [Renderizar vista](#TOC-con-vista)
+   * [Variables para la vista](#TOC-con-var)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -95,3 +98,50 @@ o ingresar una imagen a la vista:
 ```html
 <img th:src="@{/img/spring-framework.png}" alt="Logo de spring">
 ```
+## <a name="TOC-controlador"></a>Controlador
+Los controladores son usados para recibir las peticiones del cliente y asi realizar las peticiones ya sea solicitando datos a los modelos o mostrando la vista respectiva.
+
+Cuando uno crea una aplicación de spring siempre se encuentra este archivo `SpringappApplication.java`, en la ubicación de ese archivo
+hay que crear un package en el mismo nivel que se llame `controller` y dentro de esta carpeta se crearan todos los archivos controller
+con el nombre `NombreController` donde `Nombre` es el nombre con el que se llamará el controlador.
+
+```java
+@Controller
+public class IndexController {
+
+  @GetMapping(value="/index")
+  public String index(){
+      return "index";
+  }
+
+}
+```
+Para que la clase creada sea de tipo controller hay que usar el decorador `@Controller`.
+### <a name="TOC-con-vista"></a>Renderizar vista
+Ahora supongamos que al acceder a la ruta `/index` se desea mostrar la vista index creada con thymeleaf, para esto hay que colocar en
+el controlador:
+```java
+@Controller
+public class IndexController {
+
+  @GetMapping(value="/index")
+  public String index(){
+      return "index";
+  }
+
+}
+```
+El `@GetMapping` es un decorador para procesar peticiones http a la ruta asignada en value, en este caso seria `http://localhost:8080/index`,y lo que retorna es el nombre de la vista `index`, asi se debe llamar el archivo html `index.html`
+### <a name="TOC-con-var"></a>Variables para la vista
+Suponiendo que el controlador recibe una variable de la logica de negocio (modelo) y desea mostrar esta variable en la vista
+se debe agregar lo siguiente al método del controlador que maneja la ruta:
+```java
+public String index(Model model){
+   model.addAttribute("titulo","Inicio");
+   model.addAttribute("welcome","Bienvenido al sitio");
+   return "index";	      
+}
+```
+Al utilizar `Model` como parámetro en el método, este permite usar su propiedad `model.addAttribute` que permite agregar un atributo,
+donde el primer parámetro es la clave y el segundo es el valor, notese que el segundo valor no necesariamente puede ser un String o
+un integer, tambien puede ser algo mas complejo como un List.
