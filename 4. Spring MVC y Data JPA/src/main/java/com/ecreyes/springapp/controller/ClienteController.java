@@ -13,7 +13,7 @@ public class ClienteController {
     @Qualifier("ClienteDaoJPA")
     private IClienteDao clienteDao;
 
-    @GetMapping("/listar")
+    @GetMapping("/clientes")
     public String listar(Model model){
         model.addAttribute("titulo","listar clientes");
         model.addAttribute("clientes",clienteDao.findAll());
