@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
+@Repository("ClienteDaoJPA")
 public class ClienteDaoImpl implements IClienteDao {
 
     /* se inyecta la unidad de persistencia segun la configuración en el application.properties,
