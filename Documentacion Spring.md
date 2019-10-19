@@ -17,6 +17,7 @@
    * [Servicios](#TOC-model-service)
    * [Qualifier](#TOC-model-qualifier)
    * [Entity / Base de datos](#TOC-model-entity)
+   * [DAO Entity Manager / Base de datos](#TOC-model-dao)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -335,3 +336,31 @@ public class Cliente implements Serializable {
 }
 ```
 De esta forma se podrá crear la tabla de la bd desde Java.
+
+### <a name="TOC-model-dao"></a>DAO Entity Manager / Base de datos
+Antes de empezar, si se está trabajando con JPA e Hibernate con Intellij es recomendable ir a `File->Project Structure` y en `Modules` añadir el JPA y colocar en default jpa provider Hibernate y luego añadir el modulo de Hibernate, esto quitará algunos errores al momento
+de realizar consultas a la base de datos.
+
+Lo primero es crear un package dentro de model que se llame `dao` , dentro de este package se debe crear la interfaz que definira los metodos a implementar del DAO, por ejemplo:
+```java
+public interface IClienteDao {
+    List<Cliente> findAll();
+}
+```
+ahora implementando el DAO:
+```java
+@Repository
+public class ClienteDaoImpl implements IClienteDao {
+
+    /* se inyecta la unidad de persistencia segun la configuración en el application.properties,
+     * si no hay nada configurado se utiliza H2 por defecto.  */
+    @PersistenceContext
+    private EntityManager entityManager; //usado para realizar operaciones a la bd mediante objetos
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Cliente> findAll() {
+        return entityManager.createQuery("from Cliente").getResultList();
+    }
+}
+```
