@@ -18,6 +18,8 @@
    * [Qualifier](#TOC-model-qualifier)
    * [Entity / Base de datos](#TOC-model-entity)
    * [DAO Entity Manager / Base de datos](#TOC-model-dao)
+   * [H2 bd en memoria / Base de datos](#TOC-model-h2)
+   * [DI para el DAO](#TOC-model-di-dao)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -363,4 +365,32 @@ public class ClienteDaoImpl implements IClienteDao {
         return entityManager.createQuery("from Cliente").getResultList();
     }
 }
+```
+### <a name="TOC-model-h2"></a>H2 bd en memoria / Base de datos
+H2 es una base de datos en memoria que se usa de modo de prueba, no es para producción, ahora si se quieren insertar datos de prueba
+para la tabla que hemos creado, se debe crear un archivo de nombre `import.sql` dentro de `resources` y colocar lo siguiente:
+```sql
+/* poblar tabla */
+INSERT INTO clientes(id,nombre,apellido,email,create_at) VALUES (1,'Eduardo','Reyes','edu@gmail.com','2019-10-18 21:41:10');
+INSERT INTO clientes(id,nombre,apellido,email,create_at) VALUES (2,'Carlos','Reyes','carl@gmail.com','2019-10-18 21:42:10');
+INSERT INTO clientes(id,nombre,apellido,email,create_at) VALUES (3,'Ignacio','Reyes','ig@gmail.com','2019-10-18 21:43:10');
+```
+### <a name="TOC-model-di-dao"></a>DI para el DAO
+En el controlador que se desee utilizar el DAO, se debe declarar de la siguiente forma:
+```java
+@Autowired
+@Qualifier("ClienteDaoJPA")
+private IClienteDao clienteDao;
+
+@GetMapping("/listar")
+public String listar(Model model){
+    model.addAttribute("titulo","listar clientes");
+    model.addAttribute("clientes",clienteDao.findAll());
+    return "cliente/listar";
+}
+```
+Recordar que la clase que implementa la intefaz debe estar con el nombre en repository:
+```java
+@Repository("ClienteDaoJPA")
+public class ClienteDaoImpl implements IClienteDao...
 ```
