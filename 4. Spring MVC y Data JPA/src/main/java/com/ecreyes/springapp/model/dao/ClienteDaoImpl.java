@@ -16,9 +16,15 @@ public class ClienteDaoImpl implements IClienteDao {
     @PersistenceContext
     private EntityManager entityManager; //usado para realizar operaciones a la bd mediante objetos
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Cliente> findAll() {
         return entityManager.createQuery("from Cliente").getResultList();
+    }
+
+    @Override
+    @Transactional //solo porque es de escritura
+    public void save(Cliente cliente) {
+        entityManager.persist(cliente); //guarda el cliente en bd
     }
 }

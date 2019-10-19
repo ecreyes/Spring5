@@ -1,5 +1,7 @@
 package com.ecreyes.springapp.model.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +16,8 @@ public class Cliente implements Serializable {
     private String apellido;
     private String email;
     @Column(name = "create_at") //cambiar el nombre a la columna
-    @Temporal(TemporalType.TIMESTAMP) //formato de fecha completo dia,mes,año, minuto,hora,seg
+    @Temporal(TemporalType.DATE) //formato de fecha completo dia,mes,año
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 
     public Long getId() {

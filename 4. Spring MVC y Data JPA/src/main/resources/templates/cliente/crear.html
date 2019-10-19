@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="${titulo}"></title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/cliente/listar.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
@@ -30,39 +29,39 @@
 </nav>
 
 <div class="container">
-    <h1>Listado de clientes</h1>
+    <h1>Añadir un cliente</h1>
     <hr>
     <div>
-        <a th:href="@{/clientes/create}" class="btn btn-outline-primary float-right btn-margin-bottom">Añadir Cliente</a>
-    </div>
-    <div th:if="${clientes.size()==0}">
-        <p>No hay clientes en el sistema</p>
-    </div>
-    <div th:if="${clientes.size()>0}">
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Email</th>
-                <th scope="col">Fecha</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cliente: ${clientes}">
-                <th scope="row" th:text="${cliente.id}"></th>
-                <td th:text="${cliente.nombre}"></td>
-                <td th:text="${cliente.apellido}"></td>
-                <td th:text="${cliente.email}"></td>
-                <td th:text="${cliente.createAt}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <form th:action="@{/clientes}" th:object="${cliente}" method="post">
+            <div class="form-group row">
+                <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="apellido" th:field="*{apellido}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email"  class="form-control" id="email" th:field="*{email}">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="fecha" class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-10">
+                    <input type="text"  class="form-control" id="fecha" th:field="*{createAt}" placeholder="YYYY-MM-DD">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary float-right">Añadir cliente</button>
+            <input type="hidden" th:field="*{id}">
+        </form>
     </div>
 </div>
-
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
