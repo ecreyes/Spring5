@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 
@@ -20,7 +22,7 @@ public class ClienteController {
 
     // Muestra un listado de clientes
     @GetMapping("/clientes")
-    public String listar(Model model){
+    public String index(Model model){
         model.addAttribute("titulo","listar clientes");
         model.addAttribute("clientes",clienteDao.findAll());
         return "cliente/listar";
@@ -46,4 +48,22 @@ public class ClienteController {
         clienteDao.save(cliente);
         return "redirect:clientes"; //redirige a la url /clientes
     }
+
+    @GetMapping("clientes/editar/{id}")
+    public String edit(@PathVariable Long id, Model model){
+        Cliente cliente;
+        if(id>0){
+            cliente = clienteDao.findOne(id);
+            if(cliente==null){
+                return "redirect:/clientes";
+            }
+        }else{
+            return "redirect:/clientes";
+        }
+        model.addAttribute("titulo","Formulario actualizar cliente");
+        model.addAttribute("cliente",cliente);
+        return "cliente/crear";
+    }
+
+
 }

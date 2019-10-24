@@ -27,4 +27,9 @@ public class ClienteDaoImpl implements IClienteDao {
     public void save(Cliente cliente) {
         entityManager.persist(cliente); //guarda el cliente en bd
     }
+
+    @Override
+    public Cliente findOne(Long id) {
+        return entityManager.find(Cliente.class,id);
+    }
 }
