@@ -25,7 +25,11 @@ public class ClienteDaoImpl implements IClienteDao {
     @Override
     @Transactional //solo porque es de escritura
     public void save(Cliente cliente) {
-        entityManager.persist(cliente); //guarda el cliente en bd
+        if(cliente.getId()>0 && cliente.getId()!=null){
+            entityManager.merge(cliente); // actualizo el registro
+        }else{
+            entityManager.persist(cliente); //guarda el cliente en bd
+        }
     }
 
     @Override

@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 
@@ -34,6 +33,7 @@ public class ClienteController {
         Cliente cliente = new Cliente();
         model.addAttribute("titulo","Formulario crear cliente");
         model.addAttribute("cliente",cliente);
+        model.addAttribute("btnForm","Añadir cliente");
         return "cliente/crear";
     }
 
@@ -49,6 +49,7 @@ public class ClienteController {
         return "redirect:clientes"; //redirige a la url /clientes
     }
 
+    // Muestra un formulario para actualizar un cliente
     @GetMapping("clientes/editar/{id}")
     public String edit(@PathVariable Long id, Model model){
         Cliente cliente;
@@ -62,6 +63,7 @@ public class ClienteController {
         }
         model.addAttribute("titulo","Formulario actualizar cliente");
         model.addAttribute("cliente",cliente);
+        model.addAttribute("btnForm","Actualizar cliente");
         return "cliente/crear";
     }
 
