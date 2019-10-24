@@ -3,6 +3,10 @@ package com.ecreyes.springapp.model.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,12 +16,23 @@ public class Cliente implements Serializable {
     @Id //campo id de la tabla
     @GeneratedValue(strategy = GenerationType.IDENTITY) //id autoincremental
     private Long id;
+
+    @NotEmpty
+    @Size(min=2,max=15)
     private String nombre;
+
+    @NotEmpty
+    @Size(min=2,max=15)
     private String apellido;
+
+    @NotEmpty
+    @Email
     private String email;
+
     @Column(name = "create_at") //cambiar el nombre a la columna
     @Temporal(TemporalType.DATE) //formato de fecha completo dia,mes,año
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private Date createAt;
 
     public Long getId() {

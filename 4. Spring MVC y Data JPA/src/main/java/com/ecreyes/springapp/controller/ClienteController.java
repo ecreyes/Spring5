@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class ClienteController {
@@ -34,7 +37,12 @@ public class ClienteController {
 
     // método para almacenar el cliente creado en el form en la bd
     @PostMapping("clientes")
-    public String store(Cliente cliente){
+    public String store(@Valid Cliente cliente, BindingResult result,Model model){
+        if(result.hasErrors()){
+            model.addAttribute("titulo","Formulario crear cliente");
+            model.addAttribute("cliente",cliente);
+            return "cliente/crear";
+        }
         clienteDao.save(cliente);
         return "redirect:clientes"; //redirige a la url /clientes
     }
