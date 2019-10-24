@@ -10,10 +10,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 
 @Controller
+@SessionAttributes("cliente")
 public class ClienteController {
     @Autowired
     @Qualifier("ClienteDaoJPA")
@@ -39,13 +42,14 @@ public class ClienteController {
 
     // método para almacenar el cliente creado en el form en la bd
     @PostMapping("clientes")
-    public String store(@Valid Cliente cliente, BindingResult result,Model model){
+    public String store(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status){
         if(result.hasErrors()){
             model.addAttribute("titulo","Formulario crear cliente");
             model.addAttribute("cliente",cliente);
             return "cliente/crear";
         }
         clienteDao.save(cliente);
+        status.setComplete();
         return "redirect:clientes"; //redirige a la url /clientes
     }
 
