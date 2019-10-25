@@ -20,6 +20,7 @@
    * [DAO Entity Manager / Base de datos](#TOC-model-dao)
    * [H2 bd en memoria / Base de datos](#TOC-model-h2)
    * [DI para el DAO](#TOC-model-di-dao)
+5. [Conexión a base de datos](#TOC-conexion)
 
 ## <a name="TOC-introduccion"></a>Introducción
 Esta guía esta hecha con el fin de obtener tips o conceptos de forma rápida y asi implementar código en cualquier proyecto de Spring.
@@ -394,3 +395,17 @@ Recordar que la clase que implementa la intefaz debe estar con el nombre en repo
 @Repository("ClienteDaoJPA")
 public class ClienteDaoImpl implements IClienteDao...
 ```
+## <a name="TOC-conexion"></a>Conexión a base de datos.
+Para conectar una base de datos como mysql a spring, primero hay que instalar el mysql server con el driver de JDBC. Una vez instalado
+hay que modificar el archivo `application.properties`, en este archivo se debe colocar la configuración que seria algo asi:
+```yml
+spring.datasource.url = jdbc:mysql://localhost/springapp?serverTimezone=America/Santiago&useSSL=false
+spring.datasource.username = root
+spring.datasource.password = 12345
+spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto = create-drop
+spring.jpa.properties.hibernate.format_sql = true
+logging.level.org.hibernate.SQL = DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder = TRACE
+```
+En producción recordar quitar el  `spring.jpa.hibernate.ddl-auto = create-drop`
