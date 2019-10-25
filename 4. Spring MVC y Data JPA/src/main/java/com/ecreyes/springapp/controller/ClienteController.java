@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
@@ -50,11 +47,11 @@ public class ClienteController {
         }
         clienteDao.save(cliente);
         status.setComplete();
-        return "redirect:clientes"; //redirige a la url /clientes
+        return "redirect:/clientes"; //redirige a la url /clientes
     }
 
     // Muestra un formulario para actualizar un cliente
-    @GetMapping("clientes/editar/{id}")
+    @GetMapping("clientes/{id}/editar")
     public String edit(@PathVariable Long id, Model model){
         Cliente cliente;
         if(id>0){
@@ -69,6 +66,22 @@ public class ClienteController {
         model.addAttribute("cliente",cliente);
         model.addAttribute("btnForm","Actualizar cliente");
         return "cliente/crear";
+    }
+
+    //Eliminar un cliente
+    @GetMapping("clientes/{id}")
+    public String destroy(@PathVariable Long id){
+        Cliente cliente;
+        if(id>0){
+            cliente = clienteDao.findOne(id);
+            if(cliente==null){
+                return "redirect:/clientes";
+            }
+        }else{
+            return "redirect:/clientes";
+        }
+        clienteDao.delete(id);
+        return "redirect:/clientes";
     }
 
 

@@ -58,7 +58,8 @@
                 <td th:text="${cliente.email}"></td>
                 <td th:text="${cliente.createAt}"></td>
                 <td>
-                    <a th:href="@{/clientes/editar/} + ${cliente.id}" class="btn btn-outline-primary">Editar</a>
+                    <a th:href="@{/clientes/} + ${cliente.id} + @{/editar}" class="btn btn-outline-primary">Editar</a>
+                    <a th:href="@{/clientes/} + ${cliente.id}" class="btn btn-outline-danger">Eliminar</a>
                 </td>
             </tr>
             </tbody>

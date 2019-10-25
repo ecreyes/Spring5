@@ -23,9 +23,15 @@ public class ClienteDaoImpl implements IClienteDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Cliente findOne(Long id) {
+        return entityManager.find(Cliente.class,id);
+    }
+
+    @Override
     @Transactional //solo porque es de escritura
     public void save(Cliente cliente) {
-        if(cliente.getId()>0 && cliente.getId()!=null){
+        if(cliente.getId()!=null && cliente.getId()>0){
             entityManager.merge(cliente); // actualizo el registro
         }else{
             entityManager.persist(cliente); //guarda el cliente en bd
@@ -33,7 +39,9 @@ public class ClienteDaoImpl implements IClienteDao {
     }
 
     @Override
-    public Cliente findOne(Long id) {
-        return entityManager.find(Cliente.class,id);
+    @Transactional
+    public void delete(Long id) {
+        Cliente cliente = findOne(id);
+        entityManager.remove(cliente);
     }
 }
