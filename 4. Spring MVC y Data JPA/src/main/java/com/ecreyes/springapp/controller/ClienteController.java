@@ -2,6 +2,7 @@ package com.ecreyes.springapp.controller;
 
 import com.ecreyes.springapp.model.dao.IClienteDao;
 import com.ecreyes.springapp.model.entity.Cliente;
+import com.ecreyes.springapp.model.service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -16,14 +17,14 @@ import javax.validation.Valid;
 @SessionAttributes("cliente")
 public class ClienteController {
     @Autowired
-    @Qualifier("ClienteDaoJPA")
-    private IClienteDao clienteDao;
+    @Qualifier("ClienteService")
+    private IClienteService clienteService;
 
     // Muestra un listado de clientes
     @GetMapping("/clientes")
     public String index(Model model){
         model.addAttribute("titulo","listar clientes");
-        model.addAttribute("clientes",clienteDao.findAll());
+        model.addAttribute("clientes",clienteService.findAll());
         return "cliente/listar";
     }
 
@@ -45,7 +46,7 @@ public class ClienteController {
             model.addAttribute("cliente",cliente);
             return "cliente/crear";
         }
-        clienteDao.save(cliente);
+        clienteService.save(cliente);
         status.setComplete();
         return "redirect:/clientes"; //redirige a la url /clientes
     }
@@ -55,7 +56,7 @@ public class ClienteController {
     public String edit(@PathVariable Long id, Model model){
         Cliente cliente;
         if(id>0){
-            cliente = clienteDao.findOne(id);
+            cliente = clienteService.findOne(id);
             if(cliente==null){
                 return "redirect:/clientes";
             }
@@ -73,14 +74,14 @@ public class ClienteController {
     public String destroy(@PathVariable Long id){
         Cliente cliente;
         if(id>0){
-            cliente = clienteDao.findOne(id);
+            cliente = clienteService.findOne(id);
             if(cliente==null){
                 return "redirect:/clientes";
             }
         }else{
             return "redirect:/clientes";
         }
-        clienteDao.delete(id);
+        clienteService.delete(id);
         return "redirect:/clientes";
     }
 
