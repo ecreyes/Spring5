@@ -41,7 +41,13 @@ public class ClienteController {
     @PostMapping("clientes")
     public String store(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status){
         if(result.hasErrors()){
-            model.addAttribute("titulo","Formulario crear cliente");
+            if(cliente.getId()==null){
+                model.addAttribute("titulo","Formulario crear cliente");
+                model.addAttribute("btnForm","Añadir cliente");
+            }else{
+                model.addAttribute("titulo","Formulario actualizar cliente");
+                model.addAttribute("btnForm","Actualizar cliente");
+            }
             model.addAttribute("cliente",cliente);
             return "cliente/crear";
         }
