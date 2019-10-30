@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -39,7 +40,8 @@ public class ClienteController {
 
     // método para almacenar el cliente creado en el form en la bd
     @PostMapping("clientes")
-    public String store(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status){
+    public String store(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status,
+                        RedirectAttributes flash){
         if(result.hasErrors()){
             if(cliente.getId()==null){
                 model.addAttribute("titulo","Formulario crear cliente");
@@ -51,8 +53,11 @@ public class ClienteController {
             model.addAttribute("cliente",cliente);
             return "cliente/crear";
         }
+        String mensajeFlash = (cliente.getId()==null)?
+                "El cliente se ha creado correctamente!": "El cliente se ha actualizado correctamente!";
         clienteService.save(cliente);
         status.setComplete();
+        flash.addFlashAttribute("success",mensajeFlash);
         return "redirect:/clientes"; //redirige a la url /clientes
     }
 
@@ -76,7 +81,7 @@ public class ClienteController {
 
     //Eliminar un cliente
     @GetMapping("clientes/{id}")
-    public String destroy(@PathVariable Long id){
+    public String destroy(@PathVariable Long id,RedirectAttributes flash){
         Cliente cliente;
         if(id>0){
             cliente = clienteService.findOne(id);
@@ -87,6 +92,7 @@ public class ClienteController {
             return "redirect:/clientes";
         }
         clienteService.delete(id);
+        flash.addFlashAttribute("success","El cliente se eliminó correctamente");
         return "redirect:/clientes";
     }
 
