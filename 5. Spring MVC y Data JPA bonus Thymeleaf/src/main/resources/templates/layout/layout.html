@@ -4,12 +4,13 @@
     <meta charset="UTF-8"/>
     <title th:text="${titulo}"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/cliente/listar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 
-<header th:fragment="header">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<header th:fragment="header" style="margin-bottom: 5px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm border-bottom">
         <a class="navbar-brand" href="#">
             <img th:src="@{/img/logo.png}" width="30" height="30" alt="Logo de spring">
             Spring Boot
@@ -19,7 +20,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item" th:classappend="${active_inicio} ? active : ''">
                     <a class="nav-link" th:href="@{/index}">Inicio</a>
                 </li>
@@ -35,8 +36,11 @@
 
 </div>
 
-<footer th:fragment="footer" class="container">
-    <p>Este es un footer</p>
+<footer th:fragment="footer" class="footer mt-auto py-3 bg-dark text-center">
+    <div class="container">
+        <span class="text-muted">&copy; 2019 Eduardo Reyes</span>
+    </div>
+</footer>
 
 </footer>
 
