@@ -1,6 +1,5 @@
 package com.ecreyes.springapp.controller;
 
-import com.ecreyes.springapp.model.dao.IClienteDao;
 import com.ecreyes.springapp.model.entity.Cliente;
 import com.ecreyes.springapp.model.service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +82,11 @@ public class ClienteController {
         }
         clienteService.delete(id);
         return "redirect:/clientes";
+    }
+
+    @ModelAttribute("active_cliente")
+    public boolean navActive(){
+        return true;
     }
 
 
