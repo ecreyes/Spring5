@@ -12,6 +12,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @SessionAttributes("cliente")
@@ -22,9 +23,10 @@ public class ClienteController {
 
     // Muestra un listado de clientes
     @GetMapping("/clientes")
-    public String index(Model model){
+    public String index(@RequestParam(name = "page",defaultValue = "0") int page,Model model){
+        List<Cliente> clientes = clienteService.findAll();
         model.addAttribute("titulo","listar clientes");
-        model.addAttribute("clientes",clienteService.findAll());
+        model.addAttribute("clientes",clientes);
         return "cliente/listar";
     }
 

@@ -15,7 +15,7 @@
         <p>No hay clientes en el sistema</p>
     </div>
     <div th:if="${clientes.size()>0}">
-        <table class="table">
+        <table class="table" id="listado-clientes">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Id</th>
@@ -46,5 +46,10 @@
 </div>
 
 <div th:replace="layout/layout :: scripts"></div>
+<script>
+    $(document).ready(function() {
+        $('#listado-clientes').DataTable();
+    } );
+</script>
 </body>
 </html>
