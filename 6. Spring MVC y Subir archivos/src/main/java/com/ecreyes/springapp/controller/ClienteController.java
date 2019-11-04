@@ -82,6 +82,22 @@ public class ClienteController {
         return "redirect:/clientes"; //redirige a la url /clientes
     }
 
+    @GetMapping("clientes/show/{id}")
+    public String show(@PathVariable Long id, Model model){
+        Cliente cliente;
+        if(id>0){
+            cliente = clienteService.findOne(id);
+            if(cliente==null){
+                return "redirect:/clientes";
+            }
+        }else{
+            return "redirect:/clientes";
+        }
+        model.addAttribute("titulo","Cliente: ".concat(cliente.getNombre()));
+        model.addAttribute("cliente",cliente);
+        return "cliente/show";
+    }
+
     // Muestra un formulario para actualizar un cliente
     @GetMapping("clientes/{id}/editar")
     public String edit(@PathVariable Long id, Model model){
