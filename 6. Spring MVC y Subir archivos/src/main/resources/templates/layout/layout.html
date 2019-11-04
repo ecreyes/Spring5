@@ -32,6 +32,8 @@
         </div>
     </nav>
     <div class="alert alert-success" role="alert" th:if="${success !=null}" th:text="${success}"></div>
+    <div class="alert alert-warning" role="alert" th:if="${error !=null}" th:text="${error}"></div>
+    <div class="alert alert-info" role="alert" th:if="${info !=null}" th:text="${info}"></div>
 </header>
 
 <div class="container">
