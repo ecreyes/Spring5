@@ -2,6 +2,7 @@ package com.ecreyes.springapp.controller;
 
 import com.ecreyes.springapp.model.entity.Cliente;
 import com.ecreyes.springapp.model.service.IClienteService;
+import com.ecreyes.springapp.model.service.IUploadFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +16,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @SessionAttributes("cliente")
 public class ClienteController {
     private  final Logger log = LoggerFactory.getLogger(getClass());
+
     @Autowired
     @Qualifier("ClienteService")
     private IClienteService clienteService;
+
+    @Autowired
+    private IUploadFileService uploadFileService;
+
 
     // Muestra un listado de clientes
     @GetMapping("/clientes")
@@ -66,17 +67,10 @@ public class ClienteController {
         }
         if(!file.isEmpty()){
             if(cliente.getId()!=null && cliente.getId()>0 && cliente.getFoto()!=null && cliente.getFoto().length()>0){
-                Path rootPath = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
-                File archivo = rootPath.toFile();
-                if(archivo.exists() && archivo.canRead()){
-                    archivo.delete();
-                }
+                uploadFileService.deleteFile(cliente.getFoto());
             }
             try{
-                String nombreFoto = UUID.randomUUID().toString().concat(file.getOriginalFilename());
-                Path rootPath = Paths.get("uploads").resolve(nombreFoto);
-                Path rootAbsolutePath = rootPath.toAbsolutePath();
-                Files.copy(file.getInputStream(),rootAbsolutePath);
+                String nombreFoto = uploadFileService.storeFile(file);
                 flash.addFlashAttribute("info","Foto subida correctamente.");
                 cliente.setFoto(nombreFoto);
             }catch(Exception e){
@@ -137,11 +131,7 @@ public class ClienteController {
         }else{
             return "redirect:/clientes";
         }
-        Path rootPath = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
-        File archivo = rootPath.toFile();
-        if(archivo.exists() && archivo.canRead()){
-            archivo.delete();
-        }
+        uploadFileService.deleteFile(cliente.getFoto());
         clienteService.delete(id);
         flash.addFlashAttribute("success","El cliente se eliminó correctamente");
         return "redirect:/clientes";
