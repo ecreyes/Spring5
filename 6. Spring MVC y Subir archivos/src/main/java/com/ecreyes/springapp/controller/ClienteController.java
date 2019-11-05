@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,12 +65,18 @@ public class ClienteController {
             return "cliente/crear";
         }
         if(!file.isEmpty()){
+            if(cliente.getId()!=null && cliente.getId()>0 && cliente.getFoto()!=null && cliente.getFoto().length()>0){
+                Path rootPath = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
+                File archivo = rootPath.toFile();
+                if(archivo.exists() && archivo.canRead()){
+                    archivo.delete();
+                }
+            }
             try{
                 String nombreFoto = UUID.randomUUID().toString().concat(file.getOriginalFilename());
                 Path rootPath = Paths.get("uploads").resolve(nombreFoto);
                 Path rootAbsolutePath = rootPath.toAbsolutePath();
                 Files.copy(file.getInputStream(),rootAbsolutePath);
-
                 flash.addFlashAttribute("info","Foto subida correctamente.");
                 cliente.setFoto(nombreFoto);
             }catch(Exception e){
@@ -129,6 +136,11 @@ public class ClienteController {
             }
         }else{
             return "redirect:/clientes";
+        }
+        Path rootPath = Paths.get("uploads").resolve(cliente.getFoto()).toAbsolutePath();
+        File archivo = rootPath.toFile();
+        if(archivo.exists() && archivo.canRead()){
+            archivo.delete();
         }
         clienteService.delete(id);
         flash.addFlashAttribute("success","El cliente se eliminó correctamente");
