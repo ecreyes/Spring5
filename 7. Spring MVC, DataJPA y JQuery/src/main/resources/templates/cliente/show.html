@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+<header th:replace="layout/layout :: header"></header>
+
+<div class="container">
+    <h2>Detalle del cliente: <span th:text="${cliente.nombre} + ' ' + ${cliente.apellido} "></span></h2>
+    <hr>
+    <div class="card mb-3" >
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img th:if="${#strings.length(cliente.foto)>0}" th:src="@{'/uploads/'+${cliente.foto}}" class="card-img" th:alt="'Foto del cliente: '+${cliente.nombre} + ' ' + ${cliente.apellido}">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${cliente.nombre} + ' ' + ${cliente.apellido}"></h5>
+                    <p class="card-text" th:text="'Correo electrónico: ' + ${cliente.email}"></p>
+                    <p class="card-text"><small class="text-muted" th:text="'Fecha de ingreso: ' + ${cliente.createAt}"></small></p>
+                </div>
+            </div>
+        </div>
+        <a th:href="@{/clientes}" class="btn btn-outline-info">Volver al listado de clientes</a>
+    </div>
+</div>
+
+<div th:replace="layout/layout :: scripts"></div>
+</body>
+</html>
