@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity // se declara la clase como una entidad para la bd
 @Table(name = "clientes") //nombre de la tabla en bd
@@ -36,6 +38,13 @@ public class Cliente implements Serializable {
     private Date createAt;
 
     private String foto;
+
+    @OneToMany(mappedBy = "cliente",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Factura> facturas;
+
+    public Cliente() {
+        facturas = new ArrayList<>();
+    }
 
     public String getFoto() {
         return foto;
@@ -83,5 +92,17 @@ public class Cliente implements Serializable {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+
+    public void addFactura(Factura factura){
+        facturas.add(factura);
     }
 }
