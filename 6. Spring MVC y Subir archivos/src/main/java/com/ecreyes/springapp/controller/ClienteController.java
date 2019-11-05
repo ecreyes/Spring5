@@ -2,6 +2,8 @@ package com.ecreyes.springapp.controller;
 
 import com.ecreyes.springapp.model.entity.Cliente;
 import com.ecreyes.springapp.model.service.IClienteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,7 @@ import java.util.UUID;
 @Controller
 @SessionAttributes("cliente")
 public class ClienteController {
+    private  final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     @Qualifier("ClienteService")
     private IClienteService clienteService;
@@ -62,11 +65,11 @@ public class ClienteController {
         }
         if(!file.isEmpty()){
             try{
-                String rootPath = "C://springfiles//uploads";
-                byte[] bytes = file.getBytes();
                 String nombreFoto = UUID.randomUUID().toString().concat(file.getOriginalFilename());
-                Path rutaCompleta = Paths.get(rootPath.concat("/").concat(nombreFoto));
-                Files.write(rutaCompleta,bytes);
+                Path rootPath = Paths.get("uploads").resolve(nombreFoto);
+                Path rootAbsolutePath = rootPath.toAbsolutePath();
+                Files.copy(file.getInputStream(),rootAbsolutePath);
+
                 flash.addFlashAttribute("info","Foto subida correctamente.");
                 cliente.setFoto(nombreFoto);
             }catch(Exception e){
