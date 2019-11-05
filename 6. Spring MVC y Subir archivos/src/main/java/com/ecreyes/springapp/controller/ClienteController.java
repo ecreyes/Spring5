@@ -62,8 +62,7 @@ public class ClienteController {
         }
         if(!file.isEmpty()){
             try{
-                Path dir = Paths.get("src/main/resources/static/uploads");
-                String rootPath = dir.toFile().getAbsolutePath();
+                String rootPath = "C://springfiles//uploads";
                 byte[] bytes = file.getBytes();
                 String nombreFoto = UUID.randomUUID().toString().concat(file.getOriginalFilename());
                 Path rutaCompleta = Paths.get(rootPath.concat("/").concat(nombreFoto));
